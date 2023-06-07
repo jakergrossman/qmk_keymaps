@@ -1,0 +1,32 @@
+#!/bin/sh
+
+set -e
+
+if [ "$1" = "-D" ]; then
+    STOW_OP="-D"
+    shift
+else
+    STOW_OP="-S"
+fi
+
+if [ "$#" = 0 ]; then
+    echo "Expected names of keymaps to install, aborting..."
+    exit 1
+fi
+
+if [ -z "$(command -v qmk)" ]; then
+    echo "QMK not executable, aborting..."
+    exit 1
+fi
+
+if [ -z "$(command -v stow)" ]; then
+    echo "GNU stow not executable, aborting..."
+    exit 1
+fi
+
+QMK_HOME=$(qmk config user.qmk_home | awk 'BEGIN { FS = "=" } ; { print $2 }')
+QMK_KEYBOARDS="$QMK_HOME/keyboards"
+
+for map in "$@"; do
+    stow --ignore "README.md" -v --target "$QMK_KEYBOARDS" "$STOW_OP" "$map"
+done
