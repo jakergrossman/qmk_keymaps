@@ -6,11 +6,15 @@
 #define CUT LCTL(KC_X)
 #define TT_NUMP TT(NUMPAD)
 #define FN_ESC LT(FN, KC_ESC)
+#define OS_FKEY OSL(FKEY)
 
 enum layers {
     DVO,
-    NUMPAD,
     FN,
+
+    // layers below this do NOT pass through
+    NUMPAD,
+    FKEY,
 };
 
 enum custom_keycodes {
@@ -30,7 +34,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ├────────┼──────┼──────┼──────┼──────┼──────┤ CUT  │                    │ | `  ├──────┼──────┼──────┼──────┼──────┼────────┤
  * │ LShift │   '  │   Q  │   J  │   K  │   X  │      │                    │      │   B  │   M  │   W  │   V  │   Z  │ RShift │
  * ╰─┬──────┼──────┼──────┼──────┼──────┼──────┴──────╯                    ╰──────┴──────┼──────┼──────┼──────┼──────┼──────┬─╯
- *   │      │ F13  │ F14  │ F15  │ F16  │                                                │ LEFT │ DOWN │  UP  │RIGHT │ NUMP │
+ *   │ FUNC │ F13  │ F14  │ F15  │ F16  │                                                │      │      │      │      │ NUMP │
  *   ╰──────┴──────┴──────┴──────┴──────╯                                                ╰──────┴──────┴──────┴──────┴──────╯
  *                                        ╭──────┬──────╮                ╭──────┬────────╮
  *                                        │ LGui │ LAlt │                │ Alt  │Ctrl/Esc│
@@ -46,11 +50,44 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_SLSH, KC_SCLN, KC_COMM, KC_DOT,  KC_P,    KC_Y,    PASTE,           KC_AT,   KC_F,    KC_G,    KC_C,    KC_R,    KC_L,    KC_BSLS, 
   FN_ESC,  KC_A,    KC_O,    KC_E,    KC_U,    KC_I,                              KC_D,    KC_H,    KC_T,    KC_N,    KC_S,    KC_MINS, 
   KC_LSFT, KC_QUOT, KC_Q,    KC_J,    KC_K,    KC_X,    CUT,             KC_GRV,  KC_B,    KC_M,    KC_W,    KC_V,    KC_Z,    KC_RSFT, 
-  _______, KC_F13,  KC_F14,  KC_F15,  KC_F16,                                              KC_LEFT, KC_DOWN, KC_UP,   KC_RGHT, TT_NUMP, 
+  OS_FKEY, KC_F13,  KC_F14,  KC_F15,  KC_F16,                                              _______, _______, _______, _______, TT_NUMP, 
  
                                       KC_LGUI, ALT_T(KC_APP),                     KC_LALT, KC_LCTL,
                                                         KC_HOME,         KC_PGUP,
                                       KC_SPC,  KC_TAB,  KC_END,          KC_PGDN, KC_ENT,  KC_BSPC
+),
+
+/* FUNCTION
+ *
+ * ╭────────┬──────┬──────┬──────┬──────┬──────┬──────╮                    ╭──────┬──────┬──────┬──────┬──────┬──────┬────────╮
+ * │        │      │      │      │      │      │      │                    │      │      │      │      │      │      │        │
+ * ├────────┼──────┼──────┼──────┼──────┼──────┼──────┤                    ├──────┼──────┼──────┼──────┼──────┼──────┼────────┤
+ * │        │      │      │      │      │      │      │                    │      │      │      │      │      │RIGHT │        │
+ * ├────────┼──────┼──────┼──────┼──────┼──────┤      │                    │      ├──────┼──────┼──────┼──────┼──────┼────────┤
+ * │        │      │      │      │      │      ├──────┤                    ├──────┤      │ LEFT │      │      │      │        │
+ * ├────────┼──────┼──────┼──────┼──────┼──────┤      │                    │      ├──────┼──────┼──────┼──────┼──────┼────────┤
+ * │        │      │      │ DOWN │ UP   │      │      │                    │      │      │      │      │      │      │        │
+ * ╰─┬──────┼──────┼──────┼──────┼──────┼──────┴──────╯                    ╰──────┴──────┼──────┼──────┼──────┼──────┼──────┬─╯
+ *   │      │      │      │      │      │                                                │      │      │      │      │      │
+ *   ╰──────┴──────┴──────┴──────┴──────╯                                                ╰──────┴──────┴──────┴──────┴──────╯
+ *                                        ╭──────┬──────╮                ╭──────┬────────╮
+ *                                        │      │      │                │      │        │
+ *                                 ╭──────┼──────┼──────┤                ├──────┼────────┼──────╮
+ *                                 │      │      │      │                │      │        │      │
+ *                                 │      │      ├──────┤                ├──────┤        │      │
+ *                                 │      │      │      │                │      │        │      │
+ *                                 ╰──────┴──────┴──────╯                ╰──────┴────────┴──────╯
+ */
+[FN] = LAYOUT_ergodox_pretty(
+  _______, _______, _______, _______, _______, _______, _______,         _______, _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______, _______, _______,         _______, _______, _______, _______, _______, KC_RGHT, _______,
+  _______, _______, _______, _______, _______, _______,                           _______, KC_LEFT, _______, _______, _______, _______,
+  _______, _______, _______, KC_DOWN, KC_UP,   _______, _______,         _______, _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, _______, _______,                                             _______, _______, _______, _______, _______,
+
+                                             _______,   _______,         _______, _______,
+                                                        _______,         _______,
+                                      _______, _______, _______,         _______, _______, _______
 ),
 
 /* NUMPAD
@@ -75,19 +112,19 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                 ╰──────┴──────┴──────╯                ╰──────┴────────┴──────╯
  */
 [NUMPAD] = LAYOUT_ergodox_pretty(
-  _______, _______, _______, _______, _______, _______, _______,         _______, _______, KC_NUM,  KC_PEQL, KC_PSLS, KC_PAST, _______,
-  _______, _______, _______, _______, _______, _______, _______,         _______, KC_CIRC, KC_KP_7, KC_KP_8, KC_KP_9, KC_PMNS, _______,
-  _______, _______, _______, _______, _______, _______,                           KC_PIPE, KC_KP_4, KC_KP_5, KC_KP_6, KC_PPLS, _______,
-  _______, _______, _______, _______, _______, _______, _______,         _______, KC_AMPR, KC_KP_1, KC_KP_2, KC_KP_3, KC_PENT, _______,
-  _______, _______, _______, _______, _______,                                             KC_KP_0, KC_PDOT, _______, _______, _______,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,         XXXXXXX, XXXXXXX, KC_NUM,  KC_PEQL, KC_PSLS, KC_PAST, XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,         XXXXXXX, KC_CIRC, KC_KP_7, KC_KP_8, KC_KP_9, KC_PMNS, XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                           KC_PIPE, KC_KP_4, KC_KP_5, KC_KP_6, KC_PPLS, XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,         XXXXXXX, KC_AMPR, KC_KP_1, KC_KP_2, KC_KP_3, KC_PENT, XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                                             KC_KP_0, KC_PDOT, XXXXXXX, XXXXXXX, TT_NUMP,
 
-                                             _______,   _______,         _______, _______,
-                                                        _______,         _______,
-                                      _______, _______, _______,         _______, _______, _______
+                                             XXXXXXX,   XXXXXXX,         XXXXXXX, XXXXXXX,
+                                                        XXXXXXX,         XXXXXXX,
+                                      XXXXXXX, XXXXXXX, XXXXXXX,         XXXXXXX, XXXXXXX, XXXXXXX
 ),
 
 
-/* FN
+/* FKEY
  *
  * ╭────────┬──────┬──────┬──────┬──────┬──────┬──────╮                    ╭──────┬──────┬──────┬──────┬──────┬──────┬────────╮
  * │        │      │      │      │      │      │      │                    │      │      │      │      │      │      │        │
@@ -108,20 +145,58 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                 │      │      │      │                │      │        │      │
  *                                 ╰──────┴──────┴──────╯                ╰──────┴────────┴──────╯
  */
-[FN] = LAYOUT_ergodox_pretty(
-  _______, _______, _______, _______, _______, _______, _______,         _______, _______, _______, _______, _______, _______, _______,
-  _______, _______, KC_F9,   KC_F10,  KC_F11,  KC_F12,  _______,         _______, _______, KC_F21,  KC_F22,  KC_F23,  KC_F24,  _______,
-  _______, _______, KC_F5,   KC_F6,   KC_F7,   KC_F8,                             _______, KC_F17,  KC_F18,  KC_F19,  KC_F20,  _______,
-  _______, _______, KC_F1,   KC_F2,   KC_F3,   KC_F4,   _______,         _______, _______, KC_F13,  KC_F14,  KC_F15,  KC_F16,  _______,
-  _______, _______, _______, _______, _______,                                             _______, _______, _______, _______, _______,
+[FKEY] = LAYOUT_ergodox_pretty(
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,         XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
+  XXXXXXX, XXXXXXX, KC_F9,   KC_F10,  KC_F11,  KC_F12,  XXXXXXX,         XXXXXXX, XXXXXXX, KC_F21,  KC_F22,  KC_F23,  KC_F24,  XXXXXXX,
+  XXXXXXX, XXXXXXX, KC_F5,   KC_F6,   KC_F7,   KC_F8,                             XXXXXXX, KC_F17,  KC_F18,  KC_F19,  KC_F20,  XXXXXXX,
+  XXXXXXX, XXXXXXX, KC_F1,   KC_F2,   KC_F3,   KC_F4,   XXXXXXX,         XXXXXXX, XXXXXXX, KC_F13,  KC_F14,  KC_F15,  KC_F16,  XXXXXXX,
+  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                                             XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
 
-                                             _______,   _______,         _______, _______,
-                                                        _______,         _______,
-                                      _______, _______, _______,         _______, _______, _______
+                                             XXXXXXX,   XXXXXXX,         XXXXXXX, XXXXXXX,
+                                                        XXXXXXX,         XXXXXXX,
+                                      XXXXXXX, XXXXXXX, XXXXXXX,         XXXXXXX, XXXXXXX, XXXXXXX
 ),
 
 };
 // clang-format on
+
+static void layer_set_led(layer_state_t layer, bool update) {
+    static layer_state_t curr_state = 0;
+    if (update) {
+        curr_state = layer;
+    }
+
+    ergodox_led_all_off();
+    switch (biton32(curr_state)) {
+        case NUMPAD:
+            ergodox_right_led_1_on();
+            if (host_keyboard_led_state().num_lock) {
+                ergodox_right_led_3_on();
+            }
+            break;
+        case FN:
+            ergodox_right_led_2_on();
+            break;
+        case FKEY:
+            ergodox_led_all_on();
+            break;
+        default:
+            break;
+    }
+}
+
+layer_state_t layer_state_set_user(layer_state_t state) {
+    layer_set_led(state, true);
+    return state;
+}
+
+void caps_word_set_user(bool active) {
+    if (active) {
+        ergodox_led_all_on();
+    } else {
+        layer_set_led(0, false);
+    }
+}
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     if (record->event.pressed) {
@@ -129,6 +204,16 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
             case KC_VRSN:
                 SEND_STRING(QMK_VERSION ", Compiled: " __DATE__ ", " __TIME__);
                 return false;
+            case KC_NUM:
+                if (IS_LAYER_ON(NUMPAD)) {
+                    // numlock has not been sent yet, logic is inverted
+                    if (!host_keyboard_led_state().num_lock) {
+                        ergodox_right_led_3_on();
+                    } else {
+                        ergodox_right_led_3_off();
+                    }
+                }
+                break;
         }
     }
     return true;
