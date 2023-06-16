@@ -1,3 +1,4 @@
+#include <stdint.h>
 #include QMK_KEYBOARD_H
 #include "version.h"
 
@@ -26,7 +27,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* MODIFED PROGRAMMING DVORAK
  *
  * ╭────────┬──────┬──────┬──────┬──────┬──────┬──────╮                    ╭──────┬──────┬──────┬──────┬──────┬──────┬────────╮
- * │   $ ~  │ + 1  │ [ 2  │ { 3  │ ( 4  │ & 5  │ COPY │                    │ VRSN │ = 6  │ ) 7  │ } 8  │ ] 9  │ * 0  │  ! %   │
+ * │   $ ~  │ + 1  │ [ 2  │ { 3  │ ( 4  │ & 5  │ COPY │                    │      │ = 6  │ ) 7  │ } 8  │ ] 9  │ * 0  │  ! %   │
  * ├────────┼──────┼──────┼──────┼──────┼──────┼──────┤                    ├──────┼──────┼──────┼──────┼──────┼──────┼────────┤
  * │   /    │   ;  │   ,  │   .  │   P  │   Y  │PASTE │                    │ @ ^  │   F  │   G  │   C  │   R  │   L  │  \ #   │
  * ├────────┼──────┼──────┼──────┼──────┼──────┤      │                    │      ├──────┼──────┼──────┼──────┼──────┼────────┤
@@ -46,12 +47,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [DVO] = LAYOUT_ergodox_pretty(
   // left hand                                                           // right hand
-  KC_DLR,  KC_PLUS, KC_LBRC, KC_LCBR, KC_LPRN, KC_AMPR, COPY,            KC_VRSN, KC_EQL,  KC_RPRN, KC_RCBR, KC_RBRC, KC_ASTR, KC_EXLM, 
-  KC_SLSH, KC_SCLN, KC_COMM, KC_DOT,  KC_P,    KC_Y,    PASTE,           KC_AT,   KC_F,    KC_G,    KC_C,    KC_R,    KC_L,    KC_BSLS, 
-  FN_ESC,  KC_A,    KC_O,    KC_E,    KC_U,    KC_I,                              KC_D,    KC_H,    KC_T,    KC_N,    KC_S,    KC_MINS, 
-  KC_LSFT, KC_QUOT, KC_Q,    KC_J,    KC_K,    KC_X,    CUT,             KC_GRV,  KC_B,    KC_M,    KC_W,    KC_V,    KC_Z,    KC_RSFT, 
-  OS_FKEY, KC_F13,  KC_F14,  KC_F15,  KC_F16,                                              _______, _______, _______, _______, TT_NUMP, 
- 
+  KC_DLR,  KC_PLUS, KC_LBRC, KC_LCBR, KC_LPRN, KC_AMPR, COPY,            _______, KC_EQL,  KC_RPRN, KC_RCBR, KC_RBRC, KC_ASTR, KC_EXLM,
+  KC_SLSH, KC_SCLN, KC_COMM, KC_DOT,  KC_P,    KC_Y,    PASTE,           KC_AT,   KC_F,    KC_G,    KC_C,    KC_R,    KC_L,    KC_BSLS,
+  FN_ESC,  KC_A,    KC_O,    KC_E,    KC_U,    KC_I,                              KC_D,    KC_H,    KC_T,    KC_N,    KC_S,    KC_MINS,
+  KC_LSFT, KC_QUOT, KC_Q,    KC_J,    KC_K,    KC_X,    CUT,             KC_PIPE, KC_B,    KC_M,    KC_W,    KC_V,    KC_Z,    KC_RSFT,
+  OS_FKEY, KC_F13,  KC_F14,  KC_F15,  KC_F16,                                              _______, _______, _______, _______, TT_NUMP,
+
                                       KC_LGUI, ALT_T(KC_APP),                     KC_LALT, KC_LCTL,
                                                         KC_HOME,         KC_PGUP,
                                       KC_SPC,  KC_TAB,  KC_END,          KC_PGDN, KC_ENT,  KC_BSPC
@@ -71,10 +72,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *   │      │      │      │      │      │                                                │      │      │      │      │      │
  *   ╰──────┴──────┴──────┴──────┴──────╯                                                ╰──────┴──────┴──────┴──────┴──────╯
  *                                        ╭──────┬──────╮                ╭──────┬────────╮
- *                                        │      │      │                │      │        │
+ *                                        │      │      │                │ VRSN │        │
  *                                 ╭──────┼──────┼──────┤                ├──────┼────────┼──────╮
  *                                 │      │      │      │                │      │        │      │
- *                                 │      │      ├──────┤                ├──────┤        │      │
+ *                                 │      │      ├──────┤                ├──────┤        │Delete│
  *                                 │      │      │      │                │      │        │      │
  *                                 ╰──────┴──────┴──────╯                ╰──────┴────────┴──────╯
  */
@@ -85,9 +86,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   _______, _______, _______, KC_DOWN, KC_UP,   _______, _______,         _______, _______, _______, _______, _______, _______, _______,
   _______, _______, _______, _______, _______,                                             _______, _______, _______, _______, _______,
 
-                                             _______,   _______,         _______, _______,
+                                             _______,   _______,         KC_VRSN, _______,
                                                         _______,         _______,
-                                      _______, _______, _______,         _______, _______, _______
+                                      _______, _______, _______,         _______, _______, KC_DEL
 ),
 
 /* NUMPAD
@@ -255,3 +256,37 @@ const key_override_t** key_overrides = (const key_override_t *[]){
     NULL
 };
 
+bool caps_word_press_user(uint16_t keycode) {
+    if (keycode == KC_RCBR || keycode == KC_LCBR) {
+        add_weak_mods(MOD_BIT(KC_LSFT));  // Apply shift to next key.
+        return true;
+    }
+
+    switch (keycode) {
+        // Keycodes that continue Caps Word, with shift applied.
+        case KC_A ... KC_Z:
+        case KC_MINS:
+        case KC_PLUS:
+        case KC_LBRC:
+        case KC_LPRN:
+        case KC_AMPR:
+        case KC_EQL:
+        case KC_RPRN:
+        case KC_RBRC:
+        case KC_ASTR:
+            add_weak_mods(MOD_BIT(KC_LSFT));  // Apply shift to next key.
+            return true;
+
+        // Keycodes that continue Caps Word, without shifting.
+        case KC_1 ... KC_0:
+        case KC_BSPC:
+        case KC_DEL:
+        case KC_UNDS:
+        case KC_DOT:
+            return true;
+
+        default:
+            return false;  // Deactivate Caps Word.
+    }
+
+}
