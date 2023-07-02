@@ -90,7 +90,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
                                       KC_LGUI, ALT_T(KC_APP),                     KC_LALT, KC_LCTL,
                                                         KC_HOME,         KC_PGUP,
-                                      KC_SPC,  KC_TAB,  KC_END,          KC_PGDN, KC_ENT,  KC_BSPC
+                                      KC_SPC,  KC_TAB,  KC_ESC,          KC_PGDN, KC_ENT,  KC_BSPC
 ),
 
 /* FUNCTION
