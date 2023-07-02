@@ -24,9 +24,8 @@ jobs:
       - name: Install dependencies
         run: |
           apt update && apt install stow nodejs -yy
-          qmk setup -y
+          qmk setup -y jakergrossman/qmk_firmware -b key-override-respect-caps-word
           stow --dir $GITHUB_WORKSPACE --target /qmk_firmware firmware
-
 
 
       - name: Run `qmk compile` (${{ matrix.keyboard }}:${{ matrix.keymap }})
