@@ -9,11 +9,6 @@ else
     STOW_OP="-S"
 fi
 
-if [ "$#" = 0 ]; then
-    echo "Expected names of keymaps to install, aborting..."
-    exit 1
-fi
-
 if [ -z "$(command -v qmk)" ]; then
     echo "QMK not executable, aborting..."
     exit 1
@@ -25,8 +20,22 @@ if [ -z "$(command -v stow)" ]; then
 fi
 
 QMK_HOME=$(qmk config user.qmk_home | awk 'BEGIN { FS = "=" } ; { print $2 }')
-QMK_KEYBOARDS="$QMK_HOME/keyboards"
 
-for map in "$@"; do
-    stow --ignore "README.md" -v --target "$QMK_KEYBOARDS" "$STOW_OP" "$map"
-done
+stow --target "$QMK_HOME" "$STOW_OP" firmware
+
+if [ "$STOW_OP" = "-D" ]; then
+    echo "Keymaps removed from '$QMK_HOME'"
+else
+    KBS="$(find firmware/keyboards -type d)"
+    echo 'To build run `qmk compile -kb $KEYBOARD -km $KEYMAP` with one of the values below:'
+    echo '----------------------------------------------------------------------------------'
+    echo
+    (
+        echo -e 'KEYBOARD\t\tKEYMAP'
+        echo -e '--------\t\t------'
+
+        echo "$KBS" \
+            | sed -e '$!N' -e '/\(.*\)\n\1\//!P' -e 'D' \
+            | sed -e 's@firmware/keyboards/\(.\+\)/keymaps/\(.\+\)@\1\t\2@'
+    ) | column --table
+fi

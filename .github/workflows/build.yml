@@ -1,0 +1,54 @@
+name: Firmware
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: 'Build QMK Firmware'
+    runs-on: ubuntu-latest
+    container: ghcr.io/qmk/qmk_cli
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - keyboard: ergodox_ez
+            keymap: modified_programmers_dvorak
+          - keyboard: keychron/q11/ansi_encoder
+            keymap: dvorak_switcher
+
+    steps:
+      - name: Check out firmware code
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          apt update && apt install stow nodejs -yy
+          qmk setup -y
+          stow --dir $GITHUB_WORKSPACE --target /qmk_firmware firmware
+
+
+
+      - name: Run `qmk compile` (${{ matrix.keyboard }}:${{ matrix.keymap }})
+
+        run: |
+          export NCPUS=$(nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || getconf _NPROCESSORS_ONLN 2>/dev/null)
+          echo qmk compile -kb "${{ matrix.keyboard }}" -km "${{ matrix.keymap }}"
+          qmk compile -j $NCPUS -kb "${{ matrix.keyboard }}" -km "${{ matrix.keymap }}"
+
+      - name: Unfuck keyboard name
+        id: fix-keyboard-name
+        run: |
+          KEYBOARD=$(echo ${{ matrix.keyboard }} | sed -e "s/[\":<>|*?\r\n\\\/]/_/g")
+          echo "KEYBOARD=$KEYBOARD" >> "$GITHUB_OUTPUT"
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: firmware-${{ steps.fix-keyboard-name.outputs.KEYBOARD }}-${{ matrix.keymap }}
+          if-no-files-found: ignore
+          path: |
+            /qmk_firmware/*.bin
+            /qmk_firmware/*.hex
+            /qmk_firmware/*.uf2
