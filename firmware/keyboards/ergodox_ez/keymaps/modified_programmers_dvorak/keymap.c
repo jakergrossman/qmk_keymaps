@@ -11,6 +11,7 @@
 
 enum layers {
     DVO,
+    GAME,
     FN,
 
     // layers below this do NOT pass through
@@ -31,14 +32,14 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ├────────┼──────┼──────┼──────┼──────┼──────┼──────┤                    ├──────┼──────┼──────┼──────┼──────┼──────┼────────┤
  * │   /    │   ;  │   ,  │   .  │   P  │   Y  │PASTE │                    │ @ ^  │   F  │   G  │   C  │   R  │   L  │  \ #   │
  * ├────────┼──────┼──────┼──────┼──────┼──────┤      │                    │      ├──────┼──────┼──────┼──────┼──────┼────────┤
- * │ FN_ESC │   A  │   O  │   E  │   U  │   I  ├──────┤                    ├──────┤   D  │   H  │   T  │   N  │   S  │   -    │
+ * │ FN_ESC │   A  │   O  │   E  │   U  │   I  ├──────┤                    ├──────┤   D  │   H  │   T  │   N  │   S  │    -   │
  * ├────────┼──────┼──────┼──────┼──────┼──────┤ CUT  │                    │ | `  ├──────┼──────┼──────┼──────┼──────┼────────┤
  * │ LShift │   '  │   Q  │   J  │   K  │   X  │      │                    │      │   B  │   M  │   W  │   V  │   Z  │ RShift │
  * ╰─┬──────┼──────┼──────┼──────┼──────┼──────┴──────╯                    ╰──────┴──────┼──────┼──────┼──────┼──────┼──────┬─╯
  *   │ FUNC │ F13  │ F14  │ F15  │ F16  │                                                │      │      │      │      │ NUMP │
  *   ╰──────┴──────┴──────┴──────┴──────╯                                                ╰──────┴──────┴──────┴──────┴──────╯
  *                                        ╭──────┬──────╮                ╭──────┬────────╮
- *                                        │ LGui │ LAlt │                │ Alt  │Ctrl/Esc│
+ *                                        │ LGui │ LAlt │                │ Alt  │  Ctrl  │
  *                                 ╭──────┼──────┼──────┤                ├──────┼────────┼──────╮
  *                                 │      │      │ Home │                │ PgUp │        │      │
  *                                 │Space │ Tab  ├──────┤                ├──────┤  Enter │ Bspc │
@@ -57,16 +58,50 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                                         KC_HOME,         KC_PGUP,
                                       KC_SPC,  KC_TAB,  KC_END,          KC_PGDN, KC_ENT,  KC_BSPC
 ),
+/* standard dvorak (for games who only intepret the base keys like silly willies)
+ * also replaces end with escape so it can be held
+ *
+ * ╭────────┬──────┬──────┬──────┬──────┬──────┬──────╮                    ╭──────┬──────┬──────┬──────┬──────┬──────┬────────╮
+ * │   ~    │   1  │   2  │   3  │   4  │   5  │ COPY │                    │      │   6  │   7  │   8  │   9  │   0  │    =   │
+ * ├────────┼──────┼──────┼──────┼──────┼──────┼──────┤                    ├──────┼──────┼──────┼──────┼──────┼──────┼────────┤
+ * │   /    │   ;  │   ,  │   .  │   P  │   Y  │PASTE │                    │   [  │   F  │   G  │   C  │   R  │   L  │    \   │
+ * ├────────┼──────┼──────┼──────┼──────┼──────┤      │                    │      ├──────┼──────┼──────┼──────┼──────┼────────┤
+ * │ FN_ESC │   A  │   O  │   E  │   U  │   I  ├──────┤                    ├──────┤   D  │   H  │   T  │   N  │   S  │    -   │
+ * ├────────┼──────┼──────┼──────┼──────┼──────┤ CUT  │                    │   ]  ├──────┼──────┼──────┼──────┼──────┼────────┤
+ * │ LShift │   '  │   Q  │   J  │   K  │   X  │      │                    │      │   B  │   M  │   W  │   V  │   Z  │ RShift │
+ * ╰─┬──────┼──────┼──────┼──────┼──────┼──────┴──────╯                    ╰──────┴──────┼──────┼──────┼──────┼──────┼──────┬─╯
+ *   │ FUNC │ F13  │ F14  │ F15  │ F16  │                                                │      │      │      │      │ NUMP │
+ *   ╰──────┴──────┴──────┴──────┴──────╯                                                ╰──────┴──────┴──────┴──────┴──────╯
+ *                                        ╭──────┬──────╮                ╭──────┬────────╮
+ *                                        │ LGui │ LAlt │                │ Alt  │  Ctrl  │
+ *                                 ╭──────┼──────┼──────┤                ├──────┼────────┼──────╮
+ *                                 │      │      │ Home │                │ PgUp │        │      │
+ *                                 │Space │ Tab  ├──────┤                ├──────┤  Enter │ Bspc │
+ *                                 │      │      │ Esc  │                │ PgDn │        │      │
+ *                                 ╰──────┴──────┴──────╯                ╰──────┴────────┴──────╯
+ */
+[GAME] = LAYOUT_ergodox_pretty(
+  // left hand                                                           // right hand
+  KC_GRV,  KC_1,    KC_2,    KC_3,    KC_4,    KC_5,    COPY,            _______, KC_6,    KC_7,    KC_8,    KC_9,    KC_0,    KC_EQL, 
+  KC_SLSH, KC_SCLN, KC_COMM, KC_DOT,  KC_P,    KC_Y,    PASTE,           KC_LBRC, KC_F,    KC_G,    KC_C,    KC_R,    KC_L,    KC_BSLS,
+  FN_ESC,  KC_A,    KC_O,    KC_E,    KC_U,    KC_I,                              KC_D,    KC_H,    KC_T,    KC_N,    KC_S,    KC_MINS,
+  KC_LSFT, KC_QUOT, KC_Q,    KC_J,    KC_K,    KC_X,    CUT,             KC_RBRC, KC_B,    KC_M,    KC_W,    KC_V,    KC_Z,    KC_RSFT,
+  OS_FKEY, KC_F13,  KC_F14,  KC_F15,  KC_F16,                                              _______, _______, _______, _______, TT_NUMP,
+
+                                      KC_LGUI, ALT_T(KC_APP),                     KC_LALT, KC_LCTL,
+                                                        KC_HOME,         KC_PGUP,
+                                      KC_SPC,  KC_TAB,  KC_END,          KC_PGDN, KC_ENT,  KC_BSPC
+),
 
 /* FUNCTION
  
  * ╭────────┬──────┬──────┬──────┬──────┬──────┬──────╮                    ╭──────┬──────┬──────┬──────┬──────┬──────┬────────╮
  * │        │      │      │      │      │      │      │                    │      │      │      │      │      │      │        │
  * ├────────┼──────┼──────┼──────┼──────┼──────┼──────┤                    ├──────┼──────┼──────┼──────┼──────┼──────┼────────┤
- * │        │      │ Vol- │ Mute │ Vol+ │      │      │                    │      │      │      │      │      │RIGHT │        │
+ * │        │      │ Vol- │ Mute │ Vol+ │      │ DVO  │                    │      │      │      │      │      │RIGHT │        │
  * ├────────┼──────┼──────┼──────┼──────┼──────┤      │                    │      ├──────┼──────┼──────┼──────┼──────┼────────┤
  * │        │      │ Prev │ Play │ Next │      ├──────┤                    ├──────┤      │ LEFT │      │      │      │        │
- * ├────────┼──────┼──────┼──────┼──────┼──────┤      │                    │      ├──────┼──────┼──────┼──────┼──────┼────────┤
+ * ├────────┼──────┼──────┼──────┼──────┼──────┤ GAME │                    │      ├──────┼──────┼──────┼──────┼──────┼────────┤
  * │        │      │      │ DOWN │ UP   │      │      │                    │      │      │      │      │      │      │        │
  * ╰─┬──────┼──────┼──────┼──────┼──────┼──────┴──────╯                    ╰──────┴──────┼──────┼──────┼──────┼──────┼──────┬─╯
  *   │      │      │      │      │      │                                                │      │      │      │      │      │
@@ -81,9 +116,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [FN] = LAYOUT_ergodox_pretty(
   _______, _______, _______, _______, _______, _______, _______,         _______, _______, _______, _______, _______, _______, _______,
-  _______, _______, KC_VOLD, KC_MUTE, KC_VOLU, _______, _______,         _______, _______, _______, _______, _______, KC_RGHT, _______,
+  _______, _______, KC_VOLD, KC_MUTE, KC_VOLU, _______, DF(DVO),         _______, _______, _______, _______, _______, KC_RGHT, _______,
   _______, _______, KC_MPRV, KC_MPLY, KC_MNXT, _______,                           _______, KC_LEFT, _______, _______, _______, _______,
-  _______, _______, _______, KC_DOWN, KC_UP,   _______, _______,         _______, _______, _______, _______, _______, _______, _______,
+  _______, _______, _______, KC_DOWN, KC_UP,   _______, DF(GAME),        _______, _______, _______, _______, _______, _______, _______,
   _______, _______, _______, _______, _______,                                             _______, _______, _______, _______, _______,
 
                                              _______,   _______,         KC_VRSN, _______,
@@ -161,14 +196,20 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 };
 // clang-format on
 
-static void layer_set_led(layer_state_t layer, bool update) {
-    static layer_state_t curr_state = 0;
-    if (update) {
-        curr_state = layer;
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (record->event.pressed) {
+        switch (keycode) {
+            case KC_VRSN:
+                SEND_STRING(QMK_VERSION ", Compiled: " __DATE__ ", " __TIME__);
+                return false;
+        }
     }
+    return true;
+}
 
+void matrix_scan_user(void) {
     ergodox_led_all_off();
-    switch (biton32(curr_state)) {
+    switch (biton32(layer_state)) {
         case NUMPAD:
             ergodox_right_led_1_on();
             if (host_keyboard_led_state().num_lock) {
@@ -182,42 +223,16 @@ static void layer_set_led(layer_state_t layer, bool update) {
             ergodox_led_all_on();
             break;
         default:
+            if (get_highest_layer(default_layer_state) == GAME) {
+                ergodox_right_led_3_on();
+            }
             break;
     }
-}
 
-layer_state_t layer_state_set_user(layer_state_t state) {
-    layer_set_led(state, true);
-    return state;
-}
 
-void caps_word_set_user(bool active) {
-    if (active) {
+    if (is_caps_word_on()) {
         ergodox_led_all_on();
-    } else {
-        layer_set_led(0, false);
     }
-}
-
-bool process_record_user(uint16_t keycode, keyrecord_t *record) {
-    if (record->event.pressed) {
-        switch (keycode) {
-            case KC_VRSN:
-                SEND_STRING(QMK_VERSION ", Compiled: " __DATE__ ", " __TIME__);
-                return false;
-            case KC_NUM:
-                if (IS_LAYER_ON(NUMPAD)) {
-                    // numlock has not been sent yet, logic is inverted
-                    if (!host_keyboard_led_state().num_lock) {
-                        ergodox_right_led_3_on();
-                    } else {
-                        ergodox_right_led_3_off();
-                    }
-                }
-                break;
-        }
-    }
-    return true;
 }
 
 // programmer dvorak key overrides for non-standard shifts
