@@ -8,6 +8,9 @@
 #define TT_NUMP TT(NUMPAD)
 #define FN_ESC LT(FN, KC_ESC)
 #define OS_FKEY OSL(FKEY)
+#define UNDO LCTL(KC_Z)
+#define REDO LCTL(LSFT(KC_Z))
+#define END_CTL MT(MOD_LCTL, KC_END)
 
 enum layers {
     DVO,
@@ -28,7 +31,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 /* MODIFED PROGRAMMING DVORAK
  *
  * ╭────────┬──────┬──────┬──────┬──────┬──────┬──────╮                    ╭──────┬──────┬──────┬──────┬──────┬──────┬────────╮
- * │   $ ~  │ + 1  │ [ 2  │ { 3  │ ( 4  │ & 5  │ COPY │                    │      │ = 6  │ ) 7  │ } 8  │ ] 9  │ * 0  │  ! %   │
+ * │   $ ~  │ + 1  │ [ 2  │ { 3  │ ( 4  │ & 5  │ COPY │                    │ CALC │ = 6  │ ) 7  │ } 8  │ ] 9  │ * 0  │  ! %   │
  * ├────────┼──────┼──────┼──────┼──────┼──────┼──────┤                    ├──────┼──────┼──────┼──────┼──────┼──────┼────────┤
  * │   /    │   ;  │   ,  │   .  │   P  │   Y  │PASTE │                    │ @ ^  │   F  │   G  │   C  │   R  │   L  │  \ #   │
  * ├────────┼──────┼──────┼──────┼──────┼──────┤      │                    │      ├──────┼──────┼──────┼──────┼──────┼────────┤
@@ -43,23 +46,23 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                 ╭──────┼──────┼──────┤                ├──────┼────────┼──────╮
  *                                 │      │      │ Home │                │ PgUp │        │      │
  *                                 │Space │ Tab  ├──────┤                ├──────┤  Enter │ Bspc │
- *                                 │      │      │ End  │                │ PgDn │        │      │
+ *                                 │      │      │EndCtl│                │ PgDn │        │      │
  *                                 ╰──────┴──────┴──────╯                ╰──────┴────────┴──────╯
  */
 [DVO] = LAYOUT_ergodox_pretty(
   // left hand                                                           // right hand
-  KC_DLR,  KC_PLUS, KC_LBRC, KC_LCBR, KC_LPRN, KC_AMPR, COPY,            _______, KC_EQL,  KC_RPRN, KC_RCBR, KC_RBRC, KC_ASTR, KC_EXLM,
+  KC_DLR,  KC_PLUS, KC_LBRC, KC_LCBR, KC_LPRN, KC_AMPR, COPY,            KC_CALC, KC_EQL,  KC_RPRN, KC_RCBR, KC_RBRC, KC_ASTR, KC_EXLM,
   KC_SLSH, KC_SCLN, KC_COMM, KC_DOT,  KC_P,    KC_Y,    PASTE,           KC_AT,   KC_F,    KC_G,    KC_C,    KC_R,    KC_L,    KC_BSLS,
   FN_ESC,  KC_A,    KC_O,    KC_E,    KC_U,    KC_I,                              KC_D,    KC_H,    KC_T,    KC_N,    KC_S,    KC_MINS,
   KC_LSFT, KC_QUOT, KC_Q,    KC_J,    KC_K,    KC_X,    CUT,             KC_PIPE, KC_B,    KC_M,    KC_W,    KC_V,    KC_Z,    KC_RSFT,
   OS_FKEY, KC_F13,  KC_F14,  KC_F15,  KC_F16,                                              _______, _______, _______, _______, TT_NUMP,
 
-                                      KC_LGUI, ALT_T(KC_APP),                     KC_LALT, KC_LCTL,
+                                               KC_LGUI, KC_LALT,         KC_RALT, KC_LCTL,
                                                         KC_HOME,         KC_PGUP,
-                                      KC_SPC,  KC_TAB,  KC_END,          KC_PGDN, KC_ENT,  KC_BSPC
+                                      KC_SPC,  KC_TAB,  END_CTL,         KC_PGDN, KC_ENT,  KC_BSPC
 ),
 /* standard dvorak (for games who only intepret the base keys like silly willies)
- * also replaces end with escape so it can be held
+ * also replaces home with escape so it can be held
  *
  * ╭────────┬──────┬──────┬──────┬──────┬──────┬──────╮                    ╭──────┬──────┬──────┬──────┬──────┬──────┬────────╮
  * │   ~    │   1  │   2  │   3  │   4  │   5  │ COPY │                    │      │   6  │   7  │   8  │   9  │   0  │    =   │
@@ -75,9 +78,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                        ╭──────┬──────╮                ╭──────┬────────╮
  *                                        │ LGui │ LAlt │                │ Alt  │  Ctrl  │
  *                                 ╭──────┼──────┼──────┤                ├──────┼────────┼──────╮
- *                                 │      │      │ Home │                │ PgUp │        │      │
+ *                                 │      │      │ Esc  │                │ PgUp │        │      │
  *                                 │Space │ Tab  ├──────┤                ├──────┤  Enter │ Bspc │
- *                                 │      │      │ Esc  │                │ PgDn │        │      │
+ *                                 │      │      │EndCtl│                │ PgDn │        │      │
  *                                 ╰──────┴──────┴──────╯                ╰──────┴────────┴──────╯
  */
 [GAME] = LAYOUT_ergodox_pretty(
@@ -88,9 +91,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   KC_LSFT, KC_QUOT, KC_Q,    KC_J,    KC_K,    KC_X,    CUT,             KC_RBRC, KC_B,    KC_M,    KC_W,    KC_V,    KC_Z,    KC_RSFT,
   OS_FKEY, KC_F13,  KC_F14,  KC_F15,  KC_F16,                                              _______, _______, _______, _______, TT_NUMP,
 
-                                      KC_LGUI, ALT_T(KC_APP),                     KC_LALT, KC_LCTL,
-                                                        KC_HOME,         KC_PGUP,
-                                      KC_SPC,  KC_TAB,  KC_ESC,          KC_PGDN, KC_ENT,  KC_BSPC
+                                               KC_LGUI, KC_LALT,         KC_RALT, KC_LCTL,
+                                                        KC_ESC,          KC_PGUP,
+                                      KC_SPC,  KC_TAB,  END_CTL,         KC_PGDN, KC_ENT,  KC_BSPC
 ),
 
 /* FUNCTION
@@ -98,11 +101,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * ╭────────┬──────┬──────┬──────┬──────┬──────┬──────╮                    ╭──────┬──────┬──────┬──────┬──────┬──────┬────────╮
  * │        │      │      │      │      │      │      │                    │      │      │      │      │      │      │        │
  * ├────────┼──────┼──────┼──────┼──────┼──────┼──────┤                    ├──────┼──────┼──────┼──────┼──────┼──────┼────────┤
- * │        │      │ Vol- │ Mute │ Vol+ │      │ DVO  │                    │      │      │      │      │      │RIGHT │        │
+ * │        │      │ Vol- │ Mute │ Vol+ │ UNDO │ DVO  │                    │      │      │      │      │      │RIGHT │        │
  * ├────────┼──────┼──────┼──────┼──────┼──────┤      │                    │      ├──────┼──────┼──────┼──────┼──────┼────────┤
- * │        │      │ Prev │ Play │ Next │      ├──────┤                    ├──────┤      │ LEFT │      │      │      │        │
+ * │        │      │ Prev │ Play │ Next │ REDO ├──────┤                    ├──────┤      │ LEFT │      │      │      │        │
  * ├────────┼──────┼──────┼──────┼──────┼──────┤ GAME │                    │      ├──────┼──────┼──────┼──────┼──────┼────────┤
- * │        │      │      │ DOWN │ UP   │      │      │                    │      │      │      │      │      │      │        │
+ * │        │      │      │ DOWN │ UP   │ DEL  │      │                    │      │      │      │      │      │      │        │
  * ╰─┬──────┼──────┼──────┼──────┼──────┼──────┴──────╯                    ╰──────┴──────┼──────┼──────┼──────┼──────┼──────┬─╯
  *   │      │      │      │      │      │                                                │      │      │      │      │      │
  *   ╰──────┴──────┴──────┴──────┴──────╯                                                ╰──────┴──────┴──────┴──────┴──────╯
@@ -116,9 +119,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 [FN] = LAYOUT_ergodox_pretty(
   _______, _______, _______, _______, _______, _______, _______,         _______, _______, _______, _______, _______, _______, _______,
-  _______, _______, KC_VOLD, KC_MUTE, KC_VOLU, _______, DF(DVO),         _______, _______, _______, _______, _______, KC_RGHT, _______,
-  _______, _______, KC_MPRV, KC_MPLY, KC_MNXT, _______,                           _______, KC_LEFT, _______, _______, _______, _______,
-  _______, _______, _______, KC_DOWN, KC_UP,   _______, DF(GAME),        _______, _______, _______, _______, _______, _______, _______,
+  _______, _______, KC_VOLD, KC_MUTE, KC_VOLU, UNDO,    DF(DVO),         _______, _______, _______, _______, _______, KC_RGHT, _______,
+  _______, _______, KC_MPRV, KC_MPLY, KC_MNXT, REDO,                              _______, KC_LEFT, _______, _______, _______, _______,
+  _______, _______, _______, KC_DOWN, KC_UP,   KC_DEL,  DF(GAME),        _______, _______, _______, _______, _______, _______, _______,
   _______, _______, _______, _______, _______,                                             _______, _______, _______, _______, _______,
 
                                              _______,   _______,         KC_VRSN, _______,
@@ -143,7 +146,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                        │      │      │                │      │        │
  *                                 ╭──────┼──────┼──────┤                ├──────┼────────┼──────╮
  *                                 │      │      │      │                │      │        │ Back │
- *                                 │      │SPACE ├──────┤                ├──────┤        │ Space│
+ *                                 │SPACE │      ├──────┤                ├──────┤        │ Space│
  *                                 │      │      │      │                │      │        │      │
  *                                 ╰──────┴──────┴──────╯                ╰──────┴────────┴──────╯
  */
@@ -154,7 +157,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,         XXXXXXX, KC_AMPR, KC_KP_1, KC_KP_2, KC_KP_3, KC_PENT, XXXXXXX,
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                                             KC_KP_0, KC_PDOT, XXXXXXX, XXXXXXX, TT_NUMP,
 
-                                             XXXXXXX,   XXXXXXX,         XXXXXXX, XXXXXXX,
+                                               XXXXXXX, XXXXXXX,         XXXXXXX, XXXXXXX,
                                                         XXXXXXX,         XXXXXXX,
                                       KC_SPC,  XXXXXXX, XXXXXXX,         XXXXXXX, KC_ENT,  KC_BSPC
 ),
@@ -188,7 +191,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
   XXXXXXX, XXXXXXX, KC_F1,   KC_F2,   KC_F3,   KC_F4,   XXXXXXX,         XXXXXXX, XXXXXXX, KC_F13,  KC_F14,  KC_F15,  KC_F16,  XXXXXXX,
   XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                                             XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
 
-                                             XXXXXXX,   XXXXXXX,         XXXXXXX, XXXXXXX,
+                                               XXXXXXX, XXXXXXX,         XXXXXXX, XXXXXXX,
                                                         XXXXXXX,         XXXXXXX,
                                       XXXXXXX, XXXXXXX, XXXXXXX,         XXXXXXX, XXXXXXX, XXXXXXX
 ),
